@@ -103,18 +103,7 @@
 		  return false;
 	    });
 		
-		
-		
-		
-        /* Typed.js */
-		
-        $(window).load(function(){
-        $(".typing").typed({
-            strings: ["The Ahuja Lab"],    /* You can change the home section typing text from
-	                                                                                            here and do not use "&" use "and" */
-            typeSpeed: 80
-          });
-         });
+
         
 		 
         /* Parallax Background */
