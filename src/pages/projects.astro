@@ -1,0 +1,116 @@
+---
+import { getProjects } from '../storyblok'
+import Layout from '../layouts/default.astro'
+import { Image } from '@astrojs/image/components'
+import { getBase64ImageUrl } from '../image/blurDataURL'
+
+const projects = (await getProjects()).map((i) => ({ ...i.content, created_at: i.created_at }))
+
+const promises = []
+projects.forEach((i, _) => {
+  promises.push(getBase64ImageUrl(_, 0, i.Image.filename, 10))
+})
+const res = await Promise.all(promises)
+res.forEach((i) => {
+  projects[i.x]['blurDataURL'] = i.data
+})
+---
+
+<Layout title="Projects - The Ahuja Lab" description="Sneak peek into what our team at The Ahuja Lab has been building">
+  <div class="mt-16 w-[90%] flex flex-col items-start sm:max-w-3xl">
+    <h1 class="font-bold mt-3 sm:mt-5 text-2xl sm:text-4xl text-gray-100">Projects</h1>
+    <span class="mt-3 text-lg text-sky-300 leading-relaxed"> Our team has led and delivered large-scale software showcasing Artificial Intelligence and Molecular Biology at The Ahuja Lab.</span>
+    <a href="#" class="ease-in-out duration-300 mt-12 border border-[#FFFFFF]/30 shadow-white rounded-full shadow-2xl hover:scale-105 px-5 pt-2 pb-1 text-center text-[#FFFFFF]/75"> Join Us &rarr;</a>
+    <div class="mt-16 w-full border-b border-white/20 h-[1px]"></div>
+  </div>
+  <div class="w-[90%] grid grid-cols-1 sm:max-w-6xl">
+    <div class="mt-16 w-full border border-white/25 shadow hover:shadow-white duration-500 grid grid-cols-1 sm:grid-cols-2 sm:gap-4 items-stretch">
+      <div class="p-5 order-2 sm:order-1 flex flex-col">
+        <span class="font-bold text-2xl sm:text-4xl text-gray-100">{projects[0].Title}</span>
+        <span class="mt-3 text-lg text-sky-300 leading-relaxed">
+          {projects[0].About}
+        </span>
+        <a target="_blank" href={projects[0].Link} class="pt-8 lg:pt-5 mt-auto text-white/50 w-max flex flex-row items-center gap-x-2 pb-1 border-b border-white/25">
+          <span>Open In New Tab</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="p-5 order-1 sm:order-2">
+        <Image
+          fit="contain"
+          position="top"
+          alt={projects[0].Title}
+          src={projects[0].Image.filename}
+          width={projects[0].Image.filename.split('/')[5].split('x')[0]}
+          height={projects[0].Image.filename.split('/')[5].split('x')[1]}
+          class="w-full h-full border border-white/25 rounded object-cover transform-gpu"
+          style={`background-image: url(${projects[0].blurDataURL}); background-repeat: no-repeat; background-position: 50% 50%; background-size: cover;`}
+        />
+      </div>
+    </div>
+  </div>
+  <div class="w-[90%] grid grid-cols-1 sm:grid-cols-2 gap-4 sm:max-w-6xl">
+    {
+      projects.slice(1, projects.length % 2 === 0 ? projects.length - 1 : projects.length).map((i) => (
+        <div class="mt-4 w-full border border-white/25 shadow hover:shadow-white duration-500 grid grid-cols-1 lg:grid-cols-2 lg:gap-4 items-stretch">
+          <div class="p-5 order-2 md:order-1 flex flex-col">
+            <span class="font-bold text-2xl text-gray-100">{i.Title}</span>
+            <span class="mt-3 text-lg text-sky-300 leading-relaxed">{i.About}</span>
+            <a target="_blank" href={i.Link} class="pt-8 lg:pt-5 mt-auto text-white/50 w-max flex flex-row items-center gap-x-2 pb-1 border-b border-white/25">
+              <span>Open In New Tab</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z" />
+              </svg>
+            </a>
+          </div>
+          <div class="p-5 order-1 md:order-2 relative">
+            <Image
+              fit="contain"
+              alt={i.Title}
+              loading="lazy"
+              position="top"
+              src={i.Image.filename}
+              width={i.Image.filename.split('/')[5].split('x')[0]}
+              height={i.Image.filename.split('/')[5].split('x')[1]}
+              class="h-full w-full rounded object-cover border border-white/25 transform-gpu"
+              style={`background-image: url(${i.blurDataURL}); background-repeat: no-repeat; background-position: 50% 50%; background-size: cover;`}
+            />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  {
+    projects.length % 2 === 0 && (
+      <div class="w-[90%] grid grid-cols-1 sm:max-w-6xl">
+        <div class="mt-8 w-full border border-white/25 shadow hover:shadow-white duration-500 grid grid-cols-1 sm:grid-cols-2 sm:gap-4 items-stretch">
+          <div class="p-5 order-2 sm:order-1 flex flex-col">
+            <span class="font-bold text-2xl sm:text-4xl text-gray-100">{projects[projects.length - 1].Title}</span>
+            <span class="mt-3 text-lg text-sky-300 leading-relaxed">{projects[projects.length - 1].About}</span>
+            <a target="_blank" href={projects[projects.length - 1].Link} class="pt-8 lg:pt-5 mt-auto text-white/50 w-max flex flex-row items-center gap-x-2 pb-1 border-b border-white/25">
+              <span>Open In New Tab</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z" />
+              </svg>
+            </a>
+          </div>
+          <div class="p-5 order-1 sm:order-2 relative">
+            <Image
+              fit="contain"
+              loading="lazy"
+              position="top"
+              alt={projects[projects.length - 1].Title}
+              src={projects[projects.length - 1].Image.filename}
+              class="w-full h-full border border-white/25 rounded object-cover transform-gpu"
+              width={projects[projects.length - 1].Image.filename.split('/')[5].split('x')[0]}
+              height={projects[projects.length - 1].Image.filename.split('/')[5].split('x')[1]}
+              style={`background-image: url(${projects[projects.length - 1].blurDataURL}); background-repeat: no-repeat; background-position: 50% 50%; background-size: cover;`}
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+</Layout>

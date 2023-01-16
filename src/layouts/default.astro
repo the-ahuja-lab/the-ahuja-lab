@@ -1,0 +1,101 @@
+---
+import Menu from '../components/Menu.astro'
+
+const { preloads = [], title = 'The Ahuja Lab', description = 'Meet the lab that uses a hybrid approach involving Artificial Intelligence and Molecular Biology' } = Astro.props
+
+const navbarItems = [
+  {
+    name: 'Publications',
+    href: '/publications',
+  },
+  {
+    name: 'Team',
+    href: '/team',
+  },
+  {
+    name: 'Activities',
+    href: '/activities',
+  },
+  {
+    name: 'Projects',
+    href: '/projects',
+  },
+  {
+    name: 'Contact Us',
+    href: '/contact',
+  },
+]
+---
+
+<html class="scroll-smooth" lang="en">
+  <head>
+    <title>{title}</title>
+    <meta charset="utf-8" />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:title" content={title} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="twitter:label1" content="Meet Our Team" />
+    <meta name="twitter:data1" content="https://ahuja-lab.in/team" />
+    <meta name="twitter:label2" content="Design and Developed By" />
+    <meta name="twitter:data2" content="https://rishi.app" />
+    <meta name="viewport" content="width=device-width" />
+    <meta property="title" name="title" content={title} />
+    <meta name="twitter:site" content="@rishi_raj_jain_" />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="og:type" property="og:type" content="website" />
+    <meta name="og:title" property="og:title" content={title} />
+    <meta property="description" name="description" content={description} />
+    <link rel="canonical" href={'https://ahuja-lab.in' + Astro.url.pathname} />
+    <meta name="og:description" property="og:description" content={description} />
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="og:url" property="og:url" content={'https://ahuja-lab.in' + Astro.url.pathname} />
+    <meta name="twitter:url" property="og:url" content={'https://ahuja-lab.in' + Astro.url.pathname} />
+    <link rel="icon" type="image/x-icon" href="https://a.storyblok.com/f/191355/563x563/bb7d258d8e/logo.png" />
+    {preloads.length < 1 && <link rel="preload" href="/static/epilogue-var.woff2" as="font" type="font/woff2" crossorigin="anonymous" />}
+    {preloads.map((i) => <link rel="preload" href={i.href} as={i.as} />)}
+    <meta name="twitter:image" content="https://a.storyblok.com/f/191355/1200x627/f4acefede7/social-media-card.png" />
+    <meta name="og:image" property="og:image" content="https://a.storyblok.com/f/191355/1200x627/f4acefede7/social-media-card.png" />
+    <noscript>
+      <style>
+        .hide-if-no-javascript {
+          display: none;
+        }
+      </style>
+    </noscript>
+    <style>
+      @font-face {
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        font-family: 'Epilogue';
+        src: url(/static/epilogue-var.woff2) format('woff2');
+      }
+    </style>
+  </head>
+  <body class="bg-black min-h-screen min-w-screen flex flex-col items-center font-display">
+    <div class="-z-10 fixed top-0 left-0 opacity-25 brightness-100 contrast-150">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-screen h-screen">
+        <filter id="noise" x="0" y="0">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"></feTurbulence>
+          <feBlend mode="screen"></feBlend>
+        </filter>
+        <rect class="w-full h-full" filter="url(#noise)" opacity="0.1"></rect>
+      </svg>
+    </div>
+    <div class="border-b border-white/20 w-full flex flex-col items-center">
+      <div class="pt-1 pb-0.5 text-md w-full max-w-[90%] flex flex-row items-center justify-between">
+        <a href="/" class="text-white"> The Ahuja Lab</a>
+        <Menu menu={navbarItems} className="sm:hidden" />
+        <div class="text-gray-200 sm:flex hidden flex-row items-center gap-x-5">
+          {navbarItems && navbarItems.map((i) => <a href={i.href}>{i.name}</a>)}
+        </div>
+      </div>
+    </div>
+    <div class="w-full min-h-screen flex flex-col items-center">
+      <slot />
+    </div>
+    <div class="mt-16 pt-4 w-[90%] border-t border-white/20 text-white">Design and Developed by <a class="text-sky-300" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/rishi-raj-jain/"> Rishi Raj Jain</a></div>
+    <div class="mt-16 w-full h-[1px]"></div>
+  </body>
+</html>

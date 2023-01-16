@@ -1,0 +1,27 @@
+---
+const { menu, className } = Astro.props
+---
+
+<div class={'z-30 mt-2 group bg-black relative inline-block text-left ' + className} tabindex="-1">
+  <button aria-label="Hamburger Menu" type="button" aria-haspopup="true" class="active:shadow-outline-blue inline-flex w-full justify-center rounded-md text-sm font-medium leading-5 text-white">
+    <svg class="w-full" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path
+        fill-rule="evenodd"
+        d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"
+      ></path>
+    </svg>
+  </button>
+  <div class="bg-black shadow-lg z-20 invisible origin-top-right -translate-y-2 transform opacity-0 transition-all duration-300 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
+    <div role="menu" class="bg-black absolute right-0 mt-2 w-56 origin-top-right divide-y divide-white/25 rounded-md outline-none">
+      {
+        menu.map((i) => (
+          <div class="py-1">
+            <a href={i.href} role="menuitem" class="bg-black z-20 flex w-full justify-between px-4 py-2 text-left text-sm leading-5 text-white">
+              {i.name}
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
